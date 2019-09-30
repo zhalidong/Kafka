@@ -6,7 +6,8 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import java.util.Properties;
 
 /**
- * 异步发送 回调
+ * 异步发送 send函数带回调函数
+ * 回调函数会在producer收到ack时调用
  */
 
 public class ProducerCallback {

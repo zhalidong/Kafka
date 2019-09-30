@@ -16,7 +16,7 @@ public class CustomOffsetConsumer {
     public static void main(String[] args) {
 
         Properties props = new Properties();
-        props.put("bootstrap.servers", "hadoop102:9092");
+        props.put("bootstrap.servers", "node-10:9092");
         props.put("group.id", "test");//消费者组，只要group.id相同，就属于同一个消费者组
         props.put("enable.auto.commit", "false");//自动提交offset
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
@@ -27,8 +27,10 @@ public class CustomOffsetConsumer {
             //提交当前负责的分区的offset
             @Override
             public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-
-
+                System.out.println("回收的分区");
+                for (TopicPartition partition : partitions) {
+                    System.out.println("partition: "+partition);
+                }
             }
 
             //定位新分配的分区的offset
