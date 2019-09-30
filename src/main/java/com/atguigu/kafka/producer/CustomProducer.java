@@ -18,7 +18,7 @@ public class CustomProducer {
         //配置生产者参数
         Properties props = new Properties();
         //kafka集群
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "node-10:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "hadoop-01:9092");
         //key value 序列化全类名
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
@@ -26,9 +26,12 @@ public class CustomProducer {
         props.put(ProducerConfig.ACKS_CONFIG, "all");
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
         props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
+
+        //把两个拦截器放入一个list中
         ArrayList<String> interceptors = new ArrayList<>();
         interceptors.add("com.atguigu.kafka.interceptor.CounterInterceptor");
         interceptors.add("com.atguigu.kafka.interceptor.TimeInterceptor");
+        //指定拦截器
         props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, interceptors);
 
 
@@ -36,7 +39,7 @@ public class CustomProducer {
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
 
         //2.调用send方法
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 100; i++) {
             Thread.sleep(10);
             producer.send(new ProducerRecord<String, String>("number", i + "", "message-" + i));
         }
